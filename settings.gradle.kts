@@ -1,1 +1,1 @@
-rootProject.name = "commute"
+rootProject.name = "lookable"
