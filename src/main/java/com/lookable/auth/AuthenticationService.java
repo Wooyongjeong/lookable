@@ -1,5 +1,6 @@
 package com.lookable.auth;
 
+import com.lookable.domain.user.Nickname;
 import com.lookable.repository.user.UserRepository;
 import com.lookable.config.jwt.JwtService;
 import com.lookable.domain.user.Role;
@@ -26,7 +27,10 @@ public class AuthenticationService {
                 .userId(request.getUserId())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .name(request.getName())
-                .nickname(request.getNickname())
+                .nickname(
+                        Nickname.builder()
+                                .nickname(request.getNickname())
+                                .build())
                 .role(Role.USER)
                 .build();
         userRepository.save(user);

@@ -26,7 +26,8 @@ public class User extends BaseEntity implements UserDetails {
 
     private String name;
 
-    private String nickname;
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Nickname nickname;
 
     private String password;
 
