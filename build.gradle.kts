@@ -23,16 +23,20 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 	implementation("org.springframework.boot:spring-boot-starter-web")
-	implementation ("mysql:mysql-connector-java")
 	implementation ("io.jsonwebtoken:jjwt-api:0.11.5")
 	runtimeOnly ("io.jsonwebtoken:jjwt-impl:0.11.5")
 	runtimeOnly ("io.jsonwebtoken:jjwt-jackson:0.11.5")
 	compileOnly("org.projectlombok:lombok")
-	runtimeOnly("com.h2database:h2")
+	runtimeOnly ("com.mysql:mysql-connector-j:8.0.32")
 	annotationProcessor("org.projectlombok:lombok")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.security:spring-security-test")
 	testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
+	// Querydsl 추가
+	implementation ("com.querydsl:querydsl-jpa:5.0.0:jakarta")
+	annotationProcessor ("com.querydsl:querydsl-apt:5.0.0:jakarta")
+	annotationProcessor ("jakarta.annotation:jakarta.annotation-api")
+	annotationProcessor ("jakarta.persistence:jakarta.persistence-api")
 }
 
 tasks.withType<Test> {

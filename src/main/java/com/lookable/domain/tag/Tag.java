@@ -18,6 +18,7 @@ public class Tag extends BaseEntity {
 
     private String name;
 
+    @Builder.Default
     @OneToMany(mappedBy = "tag")
     private List<PostTag> postTags = new ArrayList<>();
 

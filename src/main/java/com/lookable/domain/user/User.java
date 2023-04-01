@@ -22,11 +22,11 @@ import java.util.List;
 public class User extends BaseEntity implements UserDetails {
 
     @Column(unique = true)
-    private String userId;
+    private String username;
 
     private String name;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private Nickname nickname;
 
     private String password;
@@ -34,12 +34,15 @@ public class User extends BaseEntity implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @Builder.Default
     @OneToMany(mappedBy = "user")
     private List<Post> posts = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "user")
     private List<View> views = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "user")
     private List<Heart> hearts = new ArrayList<>();
 
@@ -55,7 +58,7 @@ public class User extends BaseEntity implements UserDetails {
 
     @Override
     public String getUsername() {
-        return userId;
+        return username;
     }
 
     @Override

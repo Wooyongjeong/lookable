@@ -1,4 +1,4 @@
-package com.lookable.auth;
+package com.lookable.dto.auth.response;
 
 import lombok.*;
 
