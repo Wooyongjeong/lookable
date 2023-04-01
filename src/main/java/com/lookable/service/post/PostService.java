@@ -22,7 +22,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @Service
@@ -85,5 +88,4 @@ public class PostService {
         Post post = findPost(postId);
         return bookmarkService.bookmark(user, post) ? "북마크" : "북마크 취소";
     }
-
 }

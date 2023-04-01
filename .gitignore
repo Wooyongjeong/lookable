@@ -37,3 +37,4 @@ out/
 .vscode/
 application-rds.yml
 application-oauth.yml
+/src/main/generated/

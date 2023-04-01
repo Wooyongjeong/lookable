@@ -1,4 +1,4 @@
-package com.lookable.service;
+package com.lookable.service.auth;
 
 import com.lookable.dto.auth.request.AuthenticationRequest;
 import com.lookable.dto.auth.response.AuthenticationResponse;

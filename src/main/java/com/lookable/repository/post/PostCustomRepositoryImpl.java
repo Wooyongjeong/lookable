@@ -1,9 +1,11 @@
 package com.lookable.repository.post;
 
+import com.lookable.domain.bookmark.QBookmark;
 import com.lookable.domain.heart.QHeart;
 import com.lookable.domain.post.*;
 import com.lookable.domain.posttag.QPostTag;
 import com.lookable.domain.tag.QTag;
+import com.lookable.domain.user.QUser;
 import com.lookable.domain.user.User;
 import com.lookable.dto.post.request.PostSearchCondition;
 import com.lookable.dto.post.response.PostDetailResponse;
@@ -21,12 +23,16 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
+import static com.lookable.domain.bookmark.QBookmark.bookmark;
 import static com.lookable.domain.heart.QHeart.heart;
 import static com.lookable.domain.post.QPost.post;
 import static com.lookable.domain.posttag.QPostTag.postTag;
 import static com.lookable.domain.tag.QTag.tag;
+import static com.lookable.domain.user.QUser.user;
 
 @RequiredArgsConstructor
 public class PostCustomRepositoryImpl implements PostCustomRepository {
@@ -57,6 +63,24 @@ public class PostCustomRepositoryImpl implements PostCustomRepository {
     }
 
     @Override
+    public Page<Post> findPopularPosts(LocalDateTime startDate, LocalDateTime endDate, Pageable pageable) {
+        List<Post> posts = queryFactory.selectFrom(post)
+                .where(post.createdDate.between(startDate, endDate))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .orderBy(new OrderSpecifier<>(Order.DESC, post.hearts.size()),
+                        new OrderSpecifier<>(Order.DESC, post.views.size()),
+                        new OrderSpecifier<>(Order.ASC, post.createdDate))
+                .fetch();
+
+        JPAQuery<Long> countQuery = queryFactory.select(post.count())
+                .from(post)
+                .where(post.createdDate.goe(startDate), post.createdDate.loe(endDate));
+
+        return PageableExecutionUtils.getPage(posts, pageable, countQuery::fetchOne);
+    }
+
+    @Override
     public Post findPostDetail(Long postId, User user) {
         return queryFactory.selectFrom(post)
                 .join(post.postTags, postTag).fetchJoin()
@@ -64,6 +88,76 @@ public class PostCustomRepositoryImpl implements PostCustomRepository {
                 .where(post.id.eq(postId))
                 .fetchOne();
 
+    }
+
+    @Override
+    public Page<PostThumbnailResponse> findMyPosts(Long userId, Pageable pageable) {
+        List<PostThumbnailResponse> posts = queryFactory
+                .select(Projections.constructor(PostThumbnailResponse.class,
+                        post.id,
+                        post.img))
+                .from(post)
+                .join(post.user, user)
+                .where(user.id.eq(userId))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .orderBy(new OrderSpecifier<>(Order.DESC, post.createdDate))
+                .fetch();
+
+        JPAQuery<Long> countQuery = queryFactory.select(post.count())
+                .from(post)
+                .join(post.user, user)
+                .where(user.id.eq(userId));
+
+        return PageableExecutionUtils.getPage(posts, pageable, countQuery::fetchOne);
+    }
+
+    @Override
+    public Page<PostThumbnailResponse> findMyBookmarkPosts(Long userId, Pageable pageable) {
+        List<PostThumbnailResponse> posts = queryFactory
+                .select(Projections.constructor(PostThumbnailResponse.class,
+                        post.id,
+                        post.img))
+                .from(post)
+                .join(post.user, user)
+                .join(post.bookmarks, bookmark)
+                .where(user.id.eq(userId), bookmark.user.id.eq(userId))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .orderBy(new OrderSpecifier<>(Order.DESC, post.createdDate))
+                .fetch();
+
+        JPAQuery<Long> countQuery = queryFactory.select(post.count())
+                .from(post)
+                .join(post.user, user)
+                .join(post.bookmarks, bookmark)
+                .where(user.id.eq(userId), bookmark.user.id.eq(userId));
+
+        return PageableExecutionUtils.getPage(posts, pageable, countQuery::fetchOne);
+    }
+
+    @Override
+    public Page<PostThumbnailResponse> findMyHeartPosts(Long userId, Pageable pageable) {
+        List<PostThumbnailResponse> posts = queryFactory
+                .select(Projections.constructor(PostThumbnailResponse.class,
+                        post.id,
+                        post.img))
+                .from(post)
+                .join(post.user, user)
+                .join(post.hearts, heart)
+                .where(user.id.eq(userId), heart.user.id.eq(userId))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .orderBy(new OrderSpecifier<>(Order.DESC, post.createdDate))
+                .fetch();
+
+        JPAQuery<Long> countQuery = queryFactory.select(post.count())
+                .from(post)
+                .join(post.user, user)
+                .join(post.hearts, heart)
+                .where(user.id.eq(userId), heart.user.id.eq(userId));
+
+        return PageableExecutionUtils.getPage(posts, pageable, countQuery::fetchOne);
     }
 
     private BooleanExpression postFilterAllEq(String temperature, String weather, String sensitivity) {
