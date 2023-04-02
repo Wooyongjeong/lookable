@@ -9,8 +9,10 @@ import com.lookable.service.post.PostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
@@ -22,9 +24,9 @@ public class PostsApiController {
 
     @GetMapping
     public ApiResponse<Page<PostThumbnailResponse>> getPosts(
-            @Valid @RequestBody PostSearchCondition condition,
-            Pageable pageable
+            @Valid @ModelAttribute PostSearchCondition condition
     ) {
+        Pageable pageable = PageRequest.of(condition.getPage(), condition.getSize());
         Page<PostThumbnailResponse> response = postService.findPosts(condition, pageable);
         return ApiResponse.success(response);
     }

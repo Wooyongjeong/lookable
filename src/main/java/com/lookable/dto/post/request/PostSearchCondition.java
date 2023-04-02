@@ -1,8 +1,10 @@
 package com.lookable.dto.post.request;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
+@Setter
 @Getter
 @Builder
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
@@ -23,5 +25,11 @@ public class PostSearchCondition {
 
     @NotBlank(message = "시·군·구 조건을 설정해주세요.")
     private String district;
+
+    @NotNull(message = "page 조건을 설정해주세요.")
+    private int page;
+
+    @NotNull(message = "size 조건을 설정해주세요.")
+    private int size;
 
 }
