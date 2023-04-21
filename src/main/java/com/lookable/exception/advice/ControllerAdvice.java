@@ -20,13 +20,13 @@ import java.util.stream.Collectors;
 public class ControllerAdvice {
 
     @ExceptionHandler(SignatureException.class)
-    public ApiResponse<ErrorResult> jwtSignatureExceptionHandle(SignatureException ex) {
-        return ApiResponse.error(ErrorCode.E403_FORBIDDEN_TOKEN, ErrorCode.E403_FORBIDDEN_TOKEN.getMessage());
+    public ApiResponse<ErrorResult> jwtSignatureExceptionHandle() {
+        return ApiResponse.error(ErrorCode.E403_FORBIDDEN_TOKEN);
     }
 
     @ExceptionHandler(AuthenticationException.class)
-    public ApiResponse<ErrorResult> authenticationExceptionHandle(AuthenticationException ex) {
-        return ApiResponse.error(ErrorCode.E403_FORBIDDEN_AUTHENTICATE, ErrorCode.E403_FORBIDDEN_AUTHENTICATE.getMessage());
+    public ApiResponse<ErrorResult> authenticationExceptionHandle() {
+        return ApiResponse.error(ErrorCode.E403_FORBIDDEN_AUTHENTICATE);
     }
 
     @ExceptionHandler(BindException.class)
