@@ -29,6 +29,8 @@ public class AuthenticationService {
 
     @Transactional
     public AuthenticationResponse register(RegisterRequest request) {
+        checkNickname(request.getNickname());
+
         Nickname nickname = Nickname.builder()
                 .nickname(request.getNickname())
                 .build();
