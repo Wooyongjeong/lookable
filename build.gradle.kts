@@ -14,6 +14,10 @@ configurations {
 	}
 }
 
+tasks.jar {
+	enabled = false
+}
+
 repositories {
 	mavenCentral()
 }
