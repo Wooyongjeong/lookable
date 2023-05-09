@@ -31,6 +31,7 @@ import static com.lookable.domain.bookmark.QBookmark.bookmark;
 import static com.lookable.domain.heart.QHeart.heart;
 import static com.lookable.domain.post.QPost.post;
 import static com.lookable.domain.posttag.QPostTag.postTag;
+import static com.lookable.domain.productlink.QProductLink.productLink;
 import static com.lookable.domain.tag.QTag.tag;
 import static com.lookable.domain.user.QUser.user;
 
@@ -81,10 +82,11 @@ public class PostCustomRepositoryImpl implements PostCustomRepository {
     }
 
     @Override
-    public Post findPostDetail(Long postId, User user) {
+    public Post findPostDetail(Long postId) {
         return queryFactory.selectFrom(post)
-                .join(post.postTags, postTag).fetchJoin()
-                .join(postTag.tag, tag).fetchJoin()
+                .join(post.postTags, postTag)
+                .join(postTag.tag, tag)
+                .join(post.productLinks, productLink)
                 .where(post.id.eq(postId))
                 .fetchOne();
 

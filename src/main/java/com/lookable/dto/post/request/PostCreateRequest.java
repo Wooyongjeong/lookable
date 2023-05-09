@@ -36,6 +36,8 @@ public class PostCreateRequest {
 
     private List<String> tags;
 
+    private List<ProductLinkRequest> productLinks;
+
     public Post toEntity(User user) {
         PostFilter filter = PostFilter.builder()
                 .temperature(Temperature.valueOf(temperature))

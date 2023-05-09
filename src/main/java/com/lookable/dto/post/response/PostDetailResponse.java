@@ -1,6 +1,7 @@
 package com.lookable.dto.post.response;
 
 import com.lookable.domain.post.Post;
+import com.lookable.domain.productlink.ProductLink;
 import lombok.*;
 
 import java.util.List;
@@ -24,6 +25,7 @@ public class PostDetailResponse {
     private boolean isHeart;
     private boolean isBookmark;
     private List<String> tags;
+    private List<ProductLinkResponse> productLinks;
 
     public static PostDetailResponse fromEntity(Post post, boolean isHeart, boolean isBookmark) {
         return PostDetailResponse.builder()
@@ -40,6 +42,9 @@ public class PostDetailResponse {
                 .isBookmark(isBookmark)
                 .tags(post.getPostTags().stream()
                         .map(postTag -> postTag.getTag().getName())
+                        .collect(Collectors.toList()))
+                .productLinks(post.getProductLinks().stream()
+                        .map(ProductLinkResponse::fromEntity)
                         .collect(Collectors.toList()))
                 .build();
     }

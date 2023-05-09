@@ -49,4 +49,8 @@ public class Post extends BaseEntity {
     @OneToMany(mappedBy = "post")
     private List<Bookmark> bookmarks = new ArrayList<>();
 
+    @Builder.Default
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    private List<ProductLink> productLinks = new ArrayList<>();
+
 }
