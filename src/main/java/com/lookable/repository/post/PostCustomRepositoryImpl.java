@@ -1,9 +1,6 @@
 package com.lookable.repository.post;
 
-import com.lookable.domain.bookmark.QBookmark;
-import com.lookable.domain.heart.QHeart;
 import com.lookable.domain.post.*;
-import com.lookable.domain.posttag.QPostTag;
 import com.lookable.domain.tag.QTag;
 import com.lookable.domain.user.QUser;
 import com.lookable.domain.user.User;
@@ -14,8 +11,6 @@ import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.core.types.dsl.StringPath;
-import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +18,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -45,8 +39,12 @@ public class PostCustomRepositoryImpl implements PostCustomRepository {
         List<PostThumbnailResponse> posts = queryFactory
                 .select(Projections.constructor(PostThumbnailResponse.class,
                         post.id,
-                        post.img))
+                        post.img,
+                        post.description,
+                        post.user.nickname.nickname,
+                        post.createdAt))
                 .from(post)
+                .join(post.user, user)
                 .where(
                         postFilterAllEq(cond.getTemperature(), cond.getWeather(), cond.getSensitivity()),
                         locationEq(cond.getCity(), cond.getDistrict()))
