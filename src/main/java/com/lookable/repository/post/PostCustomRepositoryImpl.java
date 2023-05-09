@@ -95,7 +95,10 @@ public class PostCustomRepositoryImpl implements PostCustomRepository {
         List<PostThumbnailResponse> posts = queryFactory
                 .select(Projections.constructor(PostThumbnailResponse.class,
                         post.id,
-                        post.img))
+                        post.img,
+                        post.description,
+                        post.user.nickname.nickname,
+                        post.createdAt))
                 .from(post)
                 .join(post.user, user)
                 .where(user.id.eq(userId))
@@ -117,7 +120,10 @@ public class PostCustomRepositoryImpl implements PostCustomRepository {
         List<PostThumbnailResponse> posts = queryFactory
                 .select(Projections.constructor(PostThumbnailResponse.class,
                         post.id,
-                        post.img))
+                        post.img,
+                        post.description,
+                        post.user.nickname.nickname,
+                        post.createdAt))
                 .from(post)
                 .join(post.user, user)
                 .join(post.bookmarks, bookmark)
@@ -141,7 +147,10 @@ public class PostCustomRepositoryImpl implements PostCustomRepository {
         List<PostThumbnailResponse> posts = queryFactory
                 .select(Projections.constructor(PostThumbnailResponse.class,
                         post.id,
-                        post.img))
+                        post.img,
+                        post.description,
+                        post.user.nickname.nickname,
+                        post.createdAt))
                 .from(post)
                 .join(post.user, user)
                 .join(post.hearts, heart)
