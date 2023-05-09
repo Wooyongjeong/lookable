@@ -2,10 +2,12 @@ package com.lookable.service.post;
 
 import com.lookable.domain.post.Post;
 import com.lookable.domain.posttag.PostTag;
+import com.lookable.domain.productlink.ProductLink;
 import com.lookable.domain.tag.Tag;
 import com.lookable.domain.user.User;
 import com.lookable.dto.post.request.PostCreateRequest;
 import com.lookable.dto.post.request.PostSearchCondition;
+import com.lookable.dto.post.request.ProductLinkRequest;
 import com.lookable.dto.post.response.PostDetailResponse;
 import com.lookable.dto.post.response.PostThumbnailResponse;
 import com.lookable.exception.model.NotFoundException;
@@ -13,6 +15,7 @@ import com.lookable.repository.post.PostRepository;
 import com.lookable.service.bookmark.BookmarkService;
 import com.lookable.service.heart.HeartService;
 import com.lookable.service.posttag.PostTagService;
+import com.lookable.service.productlink.ProductLinkService;
 import com.lookable.service.tag.TagService;
 import com.lookable.service.user.UserService;
 import com.lookable.service.view.ViewService;
@@ -22,10 +25,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RequiredArgsConstructor
 @Service
@@ -35,6 +35,7 @@ public class PostService {
     private final UserService userService;
     private final TagService tagService;
     private final PostTagService postTagService;
+    private final ProductLinkService productLinkService;
     private final BookmarkService bookmarkService;
     private final HeartService heartService;
     private final ViewService viewService;
@@ -54,16 +55,22 @@ public class PostService {
             post.getPostTags().add(postTag);
             tag.getPostTags().add(postTag);
         });
+        List<ProductLink> productLinks = request.getProductLinks().stream()
+                .map(ProductLinkRequest::toEntity)
+                .toList();
+        productLinks.forEach(productLink -> {
+            ProductLink savedProductLink = productLinkService.createProductLink(productLink, post);
+            post.getProductLinks().add(savedProductLink);
+        });
+
         postRepository.save(post);
     }
 
     @Transactional(readOnly = true)
     public PostDetailResponse findPostDetail(Long postId, String username) {
         User user = userService.findByUsername(username);
-        Post post = postRepository.findPostDetail(postId, user);
-        if (post == null) {
-            throw new NotFoundException("존재하지 않는 피드입니다.");
-        }
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new NotFoundException("존재하지 않는 피드입니다."));
         boolean isHeart = heartService.isHeart(user.getId(), post.getId());
         boolean isBookmark = bookmarkService.isBookmark(user.getId(), post.getId());
         viewService.createViewIfNotPresent(user, post);
