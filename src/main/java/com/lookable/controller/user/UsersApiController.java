@@ -3,8 +3,8 @@ package com.lookable.controller.user;
 import com.lookable.domain.user.User;
 import com.lookable.dto.ApiResponse;
 import com.lookable.dto.post.response.PostThumbnailResponse;
-import com.lookable.dto.user.request.ChangeNicknameRequest;
-import com.lookable.dto.user.request.ChangePasswordRequest;
+import com.lookable.dto.user.request.NicknameRequest;
+import com.lookable.dto.user.request.PasswordRequest;
 import com.lookable.service.user.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -43,7 +43,7 @@ public class UsersApiController {
 
     @PutMapping("/me/nickname")
     public ApiResponse<String> changeNickname(
-            @Valid @RequestBody ChangeNicknameRequest request
+            @Valid @RequestBody NicknameRequest request
     ) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         userService.changeNickname(request.getNickname(), username);
@@ -52,7 +52,7 @@ public class UsersApiController {
 
     @PutMapping("/me/password")
     public ApiResponse<String> changePassword(
-            @Valid @RequestBody ChangePasswordRequest request
+            @Valid @RequestBody PasswordRequest request
     ) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         userService.changePassword(request.getPassword(), username);
