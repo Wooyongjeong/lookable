@@ -36,14 +36,14 @@ public class PopularPostService {
 //                .map(Map.Entry::getKey).toList();
 
         List<PostThumbnailResponse> response = postsPage.getContent().stream()
-                .map(post -> new PostThumbnailResponse(post.getId(), post.getImg()))
+                .map(PostThumbnailResponse::fromEntity)
                 .toList();
 
         return new PageImpl<>(response, postsPage.getPageable(), postsPage.getTotalElements());
     }
 
     private double calculatePostScore(Post post) {
-        LocalDateTime createdDate = post.getCreatedDate();
+        LocalDateTime createdDate = post.getCreatedAt();
         Duration duration = Duration.between(createdDate, LocalDateTime.now());
         double timeDecayFactor = calculateTimeDecayFactor(duration);
 

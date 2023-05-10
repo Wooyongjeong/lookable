@@ -5,7 +5,6 @@ import com.lookable.domain.tag.QTag;
 import com.lookable.domain.user.QUser;
 import com.lookable.domain.user.User;
 import com.lookable.dto.post.request.PostSearchCondition;
-import com.lookable.dto.post.response.PostDetailResponse;
 import com.lookable.dto.post.response.PostThumbnailResponse;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
@@ -50,7 +49,7 @@ public class PostCustomRepositoryImpl implements PostCustomRepository {
                         locationEq(cond.getCity(), cond.getDistrict()))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
-                .orderBy(new OrderSpecifier<>(Order.DESC, post.createdDate))
+                .orderBy(new OrderSpecifier<>(Order.DESC, post.createdAt))
                 .fetch();
 
         JPAQuery<Long> countQuery = queryFactory.select(post.count())
@@ -64,17 +63,17 @@ public class PostCustomRepositoryImpl implements PostCustomRepository {
     @Override
     public Page<Post> findPopularPosts(LocalDateTime startDate, LocalDateTime endDate, Pageable pageable) {
         List<Post> posts = queryFactory.selectFrom(post)
-                .where(post.createdDate.between(startDate, endDate))
+                .where(post.createdAt.between(startDate, endDate))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .orderBy(new OrderSpecifier<>(Order.DESC, post.hearts.size()),
                         new OrderSpecifier<>(Order.DESC, post.views.size()),
-                        new OrderSpecifier<>(Order.ASC, post.createdDate))
+                        new OrderSpecifier<>(Order.ASC, post.createdAt))
                 .fetch();
 
         JPAQuery<Long> countQuery = queryFactory.select(post.count())
                 .from(post)
-                .where(post.createdDate.goe(startDate), post.createdDate.loe(endDate));
+                .where(post.createdAt.goe(startDate), post.createdAt.loe(endDate));
 
         return PageableExecutionUtils.getPage(posts, pageable, countQuery::fetchOne);
     }
@@ -104,7 +103,7 @@ public class PostCustomRepositoryImpl implements PostCustomRepository {
                 .where(user.id.eq(userId))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
-                .orderBy(new OrderSpecifier<>(Order.DESC, post.createdDate))
+                .orderBy(new OrderSpecifier<>(Order.DESC, post.createdAt))
                 .fetch();
 
         JPAQuery<Long> countQuery = queryFactory.select(post.count())
@@ -130,7 +129,7 @@ public class PostCustomRepositoryImpl implements PostCustomRepository {
                 .where(user.id.eq(userId), bookmark.user.id.eq(userId))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
-                .orderBy(new OrderSpecifier<>(Order.DESC, post.createdDate))
+                .orderBy(new OrderSpecifier<>(Order.DESC, post.createdAt))
                 .fetch();
 
         JPAQuery<Long> countQuery = queryFactory.select(post.count())
@@ -157,7 +156,7 @@ public class PostCustomRepositoryImpl implements PostCustomRepository {
                 .where(user.id.eq(userId), heart.user.id.eq(userId))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
-                .orderBy(new OrderSpecifier<>(Order.DESC, post.createdDate))
+                .orderBy(new OrderSpecifier<>(Order.DESC, post.createdAt))
                 .fetch();
 
         JPAQuery<Long> countQuery = queryFactory.select(post.count())
