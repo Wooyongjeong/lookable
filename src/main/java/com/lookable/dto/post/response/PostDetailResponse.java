@@ -7,10 +7,10 @@ import lombok.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Getter
 @Builder
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Data
 public class PostDetailResponse {
 
     private Long id;

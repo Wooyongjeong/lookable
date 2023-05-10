@@ -7,30 +7,30 @@ import lombok.*;
 
 import java.util.List;
 
-@Getter
 @Builder
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Data
 public class PostCreateRequest {
 
     private String img;
 
-    @NotBlank(message = "")
+    @NotBlank(message = "본문을 입력해주세요.")
     private String description;
 
-    @NotBlank(message = "")
+    @NotBlank(message = "기온 설정을 해주세요.")
     private String temperature;
 
-    @NotBlank(message = "")
+    @NotBlank(message = "날씨 설정을 해주세요.")
     private String weather;
 
-    @NotBlank(message = "")
+    @NotBlank(message = "체질 설정을 해주세요.")
     private String sensitivity;
 
-    @NotBlank(message = "")
+    @NotBlank(message = "주소1을 입력해주세요.")
     private String city;
 
-    @NotBlank(message = "")
+    @NotBlank(message = "주소2를 입력해주세요.")
     private String district;
 
     private List<String> tags;
