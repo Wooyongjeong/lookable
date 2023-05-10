@@ -4,6 +4,7 @@ import com.lookable.domain.BaseEntity;
 import com.lookable.domain.bookmark.Bookmark;
 import com.lookable.domain.heart.Heart;
 import com.lookable.domain.posttag.PostTag;
+import com.lookable.domain.productlink.ProductLink;
 import com.lookable.domain.user.User;
 import com.lookable.domain.view.View;
 import jakarta.persistence.*;
@@ -34,19 +35,19 @@ public class Post extends BaseEntity {
     private Location location;
 
     @Builder.Default
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<PostTag> postTags = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<View> views = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Heart> hearts = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Bookmark> bookmarks = new ArrayList<>();
 
     @Builder.Default
