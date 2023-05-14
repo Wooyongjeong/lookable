@@ -16,6 +16,8 @@ public class PostDetailResponse {
     private Long id;
     private String img;
     private String description;
+    private String author;
+    private String profileImg;
     private String temperature;
     private String weather;
     private String sensitivity;
@@ -32,6 +34,8 @@ public class PostDetailResponse {
                 .id(post.getId())
                 .img(post.getImg())
                 .description(post.getDescription())
+                .author(post.getUser().getNickname().getNickname())
+                .profileImg(post.getUser().getProfileImg())
                 .temperature(post.getFilter().getTemperature().name())
                 .weather(post.getFilter().getWeather().name())
                 .sensitivity(post.getFilter().getSensitivity().name())

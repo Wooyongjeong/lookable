@@ -20,6 +20,8 @@ public class PostThumbnailResponse {
 
     private String author;
 
+    private String profileImg;
+
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime createdAt;
 
@@ -29,6 +31,7 @@ public class PostThumbnailResponse {
                 .img(post.getImg())
                 .description(post.getDescription())
                 .author(post.getUser().getNickname().getNickname())
+                .profileImg(post.getUser().getProfileImg())
                 .createdAt(post.getCreatedAt())
                 .build();
     }
