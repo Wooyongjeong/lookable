@@ -4,6 +4,7 @@ import com.lookable.dto.ApiResponse;
 import com.lookable.dto.post.response.PostThumbnailResponse;
 import com.lookable.dto.user.request.NicknameRequest;
 import com.lookable.dto.user.request.PasswordRequest;
+import com.lookable.dto.user.request.ChangeProfileImgRequest;
 import com.lookable.dto.user.response.UserInfoResponse;
 import com.lookable.service.user.UserService;
 import jakarta.validation.Valid;
@@ -63,6 +64,15 @@ public class UsersApiController {
     ) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         userService.changePassword(request.getPassword(), username);
+        return ApiResponse.OK;
+    }
+
+    @PutMapping("/me/profileImg")
+    public ApiResponse<String> changeProfileImg(
+            @Valid @RequestBody ChangeProfileImgRequest request
+    ) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        userService.changeProfileImg(request.getProfileImg(), username);
         return ApiResponse.OK;
     }
 
