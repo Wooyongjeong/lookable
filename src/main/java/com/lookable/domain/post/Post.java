@@ -26,11 +26,14 @@ public class Post extends BaseEntity {
 
     private String img;
 
+    @Column(nullable = false)
     private String description;
 
+    @Column(nullable = false)
     @Embedded
     private PostFilter filter;
 
+    @Column(nullable = false)
     @Embedded
     private Location location;
 

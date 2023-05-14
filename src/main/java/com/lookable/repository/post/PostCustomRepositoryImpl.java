@@ -1,8 +1,6 @@
 package com.lookable.repository.post;
 
 import com.lookable.domain.post.*;
-import com.lookable.domain.tag.QTag;
-import com.lookable.domain.user.QUser;
 import com.lookable.domain.user.User;
 import com.lookable.dto.post.request.PostSearchCondition;
 import com.lookable.dto.post.response.PostThumbnailResponse;
@@ -41,6 +39,7 @@ public class PostCustomRepositoryImpl implements PostCustomRepository {
                         post.img,
                         post.description,
                         post.user.nickname.nickname,
+                        post.user.profileImg,
                         post.createdAt))
                 .from(post)
                 .join(post.user, user)
@@ -86,7 +85,6 @@ public class PostCustomRepositoryImpl implements PostCustomRepository {
                 .join(post.productLinks, productLink)
                 .where(post.id.eq(postId))
                 .fetchOne();
-
     }
 
     @Override
@@ -97,6 +95,7 @@ public class PostCustomRepositoryImpl implements PostCustomRepository {
                         post.img,
                         post.description,
                         post.user.nickname.nickname,
+                        post.user.profileImg,
                         post.createdAt))
                 .from(post)
                 .join(post.user, user)
@@ -122,11 +121,12 @@ public class PostCustomRepositoryImpl implements PostCustomRepository {
                         post.img,
                         post.description,
                         post.user.nickname.nickname,
+                        post.user.profileImg,
                         post.createdAt))
                 .from(post)
                 .join(post.user, user)
                 .join(post.bookmarks, bookmark)
-                .where(user.id.eq(userId), bookmark.user.id.eq(userId))
+                .where(bookmark.user.id.eq(userId))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .orderBy(new OrderSpecifier<>(Order.DESC, post.createdAt))
@@ -149,11 +149,12 @@ public class PostCustomRepositoryImpl implements PostCustomRepository {
                         post.img,
                         post.description,
                         post.user.nickname.nickname,
+                        post.user.profileImg,
                         post.createdAt))
                 .from(post)
                 .join(post.user, user)
                 .join(post.hearts, heart)
-                .where(user.id.eq(userId), heart.user.id.eq(userId))
+                .where(heart.user.id.eq(userId))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .orderBy(new OrderSpecifier<>(Order.DESC, post.createdAt))

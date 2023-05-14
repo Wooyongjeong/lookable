@@ -1,0 +1,1 @@
+alter table user ADD profile_img varchar(255);
