@@ -3,7 +3,9 @@ package com.lookable.service.user;
 import com.lookable.domain.user.Nickname;
 import com.lookable.domain.user.User;
 import com.lookable.dto.post.response.PostThumbnailResponse;
+import com.lookable.dto.user.response.UserInfoResponse;
 import com.lookable.exception.model.DuplicatePasswordException;
+import com.lookable.exception.model.DuplicateProfileImgException;
 import com.lookable.exception.model.NotFoundException;
 import com.lookable.repository.post.PostRepository;
 import com.lookable.repository.user.NicknameRepository;
@@ -30,6 +32,12 @@ public class UserService {
     public User findByUsername(String username) {
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new NotFoundException("사용자를 찾을 수 없습니다."));
+    }
+
+    @Transactional(readOnly = true)
+    public UserInfoResponse findMyInfo(String username) {
+        User user = findByUsername(username);
+        return UserInfoResponse.fromEntity(user);
     }
 
     @Transactional(readOnly = true)
@@ -74,5 +82,14 @@ public class UserService {
         }
 
         user.updatePassword(encodedPassword);
+    }
+
+    @Transactional
+    public void changeProfileImg(String profileImg, String username) {
+        User user = findByUsername(username);
+        if (profileImg.equals(user.getProfileImg())) {
+            throw new DuplicateProfileImgException();
+        }
+        user.updateProfileImg(profileImg);
     }
 }
