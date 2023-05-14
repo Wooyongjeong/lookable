@@ -1,10 +1,10 @@
 package com.lookable.controller.user;
 
-import com.lookable.domain.user.User;
 import com.lookable.dto.ApiResponse;
 import com.lookable.dto.post.response.PostThumbnailResponse;
 import com.lookable.dto.user.request.NicknameRequest;
 import com.lookable.dto.user.request.PasswordRequest;
+import com.lookable.dto.user.response.UserInfoResponse;
 import com.lookable.service.user.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +19,13 @@ import org.springframework.web.bind.annotation.*;
 public class UsersApiController {
 
     private final UserService userService;
+
+    @GetMapping("/me")
+    public ApiResponse<UserInfoResponse> getMyInfo() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        UserInfoResponse response = userService.findMyInfo(username);
+        return ApiResponse.success(response);
+    }
 
     @GetMapping("/me/posts")
     public ApiResponse<Page<PostThumbnailResponse>> getMyPosts(Pageable pageable) {
