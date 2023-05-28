@@ -3,9 +3,6 @@
 <p align="center">
   <img src="https://github.com/Wooyongjeong/lookable/assets/38418028/dc0e0edc-b1db-4d16-b432-f320793da604" width=20% />
   <img src="https://github.com/Wooyongjeong/lookable/assets/38418028/1c5a4bdd-2092-4d7f-b8bd-6d5d75bfdd12" width=20% />
-</p>
-
-<p align="center">
   <img src="https://github.com/Wooyongjeong/lookable/assets/38418028/db3f4d8b-9142-4d5b-957f-19d7c39ffff7" width=20% />
   <img src="https://github.com/Wooyongjeong/lookable/assets/38418028/4877e0fe-f998-4f32-b729-a40c369af664" width=20% />
 </p>
