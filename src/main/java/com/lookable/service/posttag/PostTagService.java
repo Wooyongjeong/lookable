@@ -16,13 +16,37 @@ public class PostTagService {
 
     private final PostTagRepository postTagRepository;
 
-    @Transactional
-    public PostTag createPostTag(Post post, Tag tag) {
-        PostTag postTag = PostTag.builder()
+    public PostTag getPostTag(Post post, Tag tag) {
+        return PostTag.builder()
                 .post(post)
                 .tag(tag)
                 .build();
+    }
+
+    @Transactional
+    public PostTag findOrCreatePostTag(Post post, Tag tag) {
+        return postTagRepository.findByPostAndTag(post, tag)
+                .orElseGet(() -> getPostTag(post, tag));
+    }
+
+    @Transactional
+    public PostTag createPostTag(Post post, Tag tag) {
+        return postTagRepository.save(getPostTag(post, tag));
+    }
+
+    @Transactional
+    public PostTag savePostTag(PostTag postTag) {
         return postTagRepository.save(postTag);
+    }
+
+    @Transactional
+    public List<PostTag> saveAll(List<PostTag> postTags) {
+        return postTagRepository.saveAll(postTags);
+    }
+
+    @Transactional
+    public void deletePostTag(List<PostTag> postTags) {
+        postTagRepository.deleteAll(postTags);
     }
 
 }

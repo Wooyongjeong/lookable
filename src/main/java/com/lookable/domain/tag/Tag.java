@@ -2,6 +2,7 @@ package com.lookable.domain.tag;
 
 import com.lookable.domain.BaseEntity;
 import com.lookable.domain.posttag.PostTag;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import lombok.*;

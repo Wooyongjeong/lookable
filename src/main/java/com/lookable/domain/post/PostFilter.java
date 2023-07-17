@@ -21,4 +21,16 @@ public class PostFilter {
     @Enumerated(EnumType.STRING)
     private Sensitivity sensitivity;
 
+    public void updateTemperature(String temperature) {
+        this.temperature = Temperature.valueOf(temperature);
+    }
+
+    public void updateWeather(String weather) {
+        this.weather = Weather.valueOf(weather);
+    }
+
+    public void updateSensitivity(String sensitivity) {
+        this.sensitivity = Sensitivity.valueOf(sensitivity);
+    }
+
 }

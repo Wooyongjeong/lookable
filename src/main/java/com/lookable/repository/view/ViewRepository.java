@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ViewRepository extends JpaRepository<View, Long> {
 
-    boolean existsByUserIdAndPostId(Long userId, Long postId);
-    View findByUserAndPost(User user, Post post);
+    boolean existsByUserAndPost(User user, Post post);
 
 }

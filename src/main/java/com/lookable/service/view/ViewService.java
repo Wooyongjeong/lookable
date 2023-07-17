@@ -15,15 +15,16 @@ public class ViewService {
 
     private final ViewRepository viewRepository;
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional
     public void createViewIfNotPresent(User user, Post post) {
-        if (viewRepository.existsByUserIdAndPostId(user.getId(), post.getId())) {
+        if (viewRepository.existsByUserAndPost(user, post)) {
             return;
         }
         createView(user, post);
     }
 
-    private void createView(User user, Post post) {
+    @Transactional
+    public void createView(User user, Post post) {
         View view = View.builder()
                 .user(user)
                 .post(post)

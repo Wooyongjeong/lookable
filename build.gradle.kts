@@ -41,6 +41,8 @@ dependencies {
 	annotationProcessor ("com.querydsl:querydsl-apt:5.0.0:jakarta")
 	annotationProcessor ("jakarta.annotation:jakarta.annotation-api")
 	annotationProcessor ("jakarta.persistence:jakarta.persistence-api")
+	// p6spy
+	implementation("com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.0")
 	// flyway
 	implementation("org.flywaydb:flyway-core")
 	implementation("org.flywaydb:flyway-mysql")

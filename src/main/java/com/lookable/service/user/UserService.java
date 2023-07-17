@@ -92,4 +92,11 @@ public class UserService {
         }
         user.updateProfileImg(profileImg);
     }
+
+    @Transactional
+    public void deleteMe(String username) {
+        User user = findByUsername(username);
+        userRepository.delete(user);
+    }
+
 }

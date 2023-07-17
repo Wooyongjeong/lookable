@@ -3,10 +3,7 @@ package com.lookable.domain.posttag;
 import com.lookable.domain.BaseEntity;
 import com.lookable.domain.post.Post;
 import com.lookable.domain.tag.Tag;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Getter

@@ -76,4 +76,11 @@ public class UsersApiController {
         return ApiResponse.OK;
     }
 
+    @DeleteMapping("/me")
+    public ApiResponse<String> deleteMe() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        userService.deleteMe(username);
+        return ApiResponse.OK;
+    }
+
 }

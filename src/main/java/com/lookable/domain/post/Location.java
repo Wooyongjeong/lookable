@@ -14,4 +14,13 @@ public class Location {
 
     private String district;
 
+    public void updateLocation(String city, String district) {
+        if (null != city) {
+            this.city = city;
+        }
+
+        if (null != district) {
+            this.district = district;
+        }
+    }
 }

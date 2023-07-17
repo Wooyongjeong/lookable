@@ -23,4 +23,8 @@ public class ProductLinkRequest {
                 .build();
     }
 
+    public boolean isEqualToProductLink(ProductLink productLink) {
+        return name.equals(productLink.getName()) && link.equals(productLink.getLink());
+    }
+
 }

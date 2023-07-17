@@ -9,6 +9,11 @@ public abstract class LookableBaseException extends RuntimeException {
 
     private final ErrorCode errorCode;
 
+    protected LookableBaseException(ErrorCode errorCode) {
+        super(errorCode.getMessage());
+        this.errorCode = errorCode;
+    }
+
     protected LookableBaseException(String message, ErrorCode errorCode) {
         super(message);
         this.errorCode = errorCode;
