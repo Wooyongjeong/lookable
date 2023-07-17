@@ -1,54 +1,54 @@
-alter table bookmark
-drop
-foreign key FKkm47dr0i09mor5ks9aaebx15u;
-
-alter table bookmark
-drop
-foreign key FK3ogdxsxa4tx6vndyvpk1fk1am;
-
-alter table heart
-drop
-foreign key FKqyr9v537b0go8pcrr83aq4m4;
-
-alter table heart
-drop
-foreign key FK5pv32bwn1jhofpwouomqupc6u;
-
-alter table hot_topic_answer
-drop
-foreign key FKjbckphptqqx0wc94pr00delr5;
-
-alter table hot_topic_answer
-drop
-foreign key FKl8q4x4hmhm1rq1wqjk9pbhb4h;
-
-alter table nickname
-drop
-foreign key FKdjpf7insbdfpsrfrp29qv4bk8;
-
-alter table post
-drop
-foreign key FK72mt33dhhs48hf9gcqrq4fxte;
-
-alter table post_tag
-drop
-foreign key FKc2auetuvsec0k566l0eyvr9cs;
-
-alter table post_tag
-drop
-foreign key FKac1wdchd2pnur3fl225obmlg0;
-
-alter table product_link
-drop
-foreign key FKoeix04tcevm7ytj49j0kajft0;
-
-alter table view
-drop
-foreign key FKdjs52rs6rvnt6cyl8de7hgero;
-
-alter table view
-drop
-foreign key FK37w6bab99jhjeja56i1te4htp;
+# alter table bookmark
+# drop
+# foreign key FKkm47dr0i09mor5ks9aaebx15u;
+#
+# alter table bookmark
+# drop
+# foreign key FK3ogdxsxa4tx6vndyvpk1fk1am;
+#
+# alter table heart
+# drop
+# foreign key FKqyr9v537b0go8pcrr83aq4m4;
+#
+# alter table heart
+# drop
+# foreign key FK5pv32bwn1jhofpwouomqupc6u;
+#
+# alter table hot_topic_answer
+# drop
+# foreign key FKjbckphptqqx0wc94pr00delr5;
+#
+# alter table hot_topic_answer
+# drop
+# foreign key FKl8q4x4hmhm1rq1wqjk9pbhb4h;
+#
+# alter table nickname
+# drop
+# foreign key FKdjpf7insbdfpsrfrp29qv4bk8;
+#
+# alter table post
+# drop
+# foreign key FK72mt33dhhs48hf9gcqrq4fxte;
+#
+# alter table post_tag
+# drop
+# foreign key FKc2auetuvsec0k566l0eyvr9cs;
+#
+# alter table post_tag
+# drop
+# foreign key FKac1wdchd2pnur3fl225obmlg0;
+#
+# alter table product_link
+# drop
+# foreign key FKoeix04tcevm7ytj49j0kajft0;
+#
+# alter table view
+# drop
+# foreign key FKdjs52rs6rvnt6cyl8de7hgero;
+#
+# alter table view
+# drop
+# foreign key FK37w6bab99jhjeja56i1te4htp;
 
 drop table if exists bookmark;
 drop table if exists feedback;

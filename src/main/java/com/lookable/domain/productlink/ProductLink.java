@@ -18,7 +18,7 @@ public class ProductLink extends BaseEntity {
     @Column(nullable = false, length = 65535)
     private String link;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "post_id")
     private Post post;
 

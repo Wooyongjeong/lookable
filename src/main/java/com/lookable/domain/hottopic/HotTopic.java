@@ -2,10 +2,7 @@ package com.lookable.domain.hottopic;
 
 import com.lookable.domain.BaseEntity;
 import com.lookable.domain.hottopicanswer.HotTopicAnswer;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -26,7 +23,7 @@ public class HotTopic extends BaseEntity {
     private Integer temperatureTo;
 
     @Builder.Default
-    @OneToMany(mappedBy = "hotTopic", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "hotTopic", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<HotTopicAnswer> hotTopicAnswers = new ArrayList<>();
 
 }

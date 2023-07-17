@@ -28,6 +28,7 @@ public enum ErrorCode {
      * 401 UnAuthorized (인증 실패)
      */
     E401_UNAUTHORIZED(UNAUTHORIZED, "UA000", "인증에 실패하였습니다. 다시 로그인 해주세요"),
+    E401_UNAUTHORIZED_NOT_MATCH_PASSWORD(UNAUTHORIZED, "UA001", "비밀번호가 일치하지 않습니다"),
 
     /**
      * 403 Forbidden (권한 등의 이유로 허용되지 않은 요청)
@@ -35,6 +36,7 @@ public enum ErrorCode {
     E403_FORBIDDEN(FORBIDDEN, "FB000", "허용되지 않은 요청입니다"),
     E403_FORBIDDEN_TOKEN(FORBIDDEN, "FB001", "잘못된 토큰입니다"),
     E403_FORBIDDEN_AUTHENTICATE(FORBIDDEN, "FB002", "아이디 혹은 비밀번호를 확인해주세요"),
+    E403_FORBIDDEN_NOT_AUTHOR(FORBIDDEN, "FB003", "작성자가 아닙니다"),
 
     /**
      * 404 Not Found (존재하지 않는 리소스)
@@ -52,6 +54,7 @@ public enum ErrorCode {
     E409_CONFLICT(CONFLICT, "CF000", "이미 존재합니다"),
     E409_CONFLICT_NICKNAME(CONFLICT, "CF001", "사용중인 닉네임입니다"),
     E409_CONFLICT_PASSWORD(CONFLICT, "CF002", "이전에 사용한 비밀번호입니다"),
+    E409_CONFLICT_PROFILE_IMG(CONFLICT, "CF003", "기존 프로필 이미지와 동일한 이미지입니다"),
 
     /**
      * 429 Too Many Request (RateLimit)

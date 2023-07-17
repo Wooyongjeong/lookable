@@ -38,23 +38,50 @@ public class Post extends BaseEntity {
     private Location location;
 
     @Builder.Default
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PostTag> postTags = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<View> views = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Heart> hearts = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Bookmark> bookmarks = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProductLink> productLinks = new ArrayList<>();
 
+    public void updatePost(String img, String description,
+                           String temperature, String weather, String sensitivity,
+                           String city, String district) {
+        if (null != img) {
+            this.img = img;
+        }
+
+        if (null != description) {
+            this.description = description;
+        }
+
+        if (null != temperature) {
+            this.filter.updateTemperature(temperature);
+        }
+
+        if (null != weather) {
+            this.filter.updateWeather(weather);
+        }
+
+        if (null != sensitivity) {
+            this.filter.updateSensitivity(sensitivity);
+        }
+
+        if (null != city || null != district) {
+            this.location.updateLocation(city, district);
+        }
+    }
 }

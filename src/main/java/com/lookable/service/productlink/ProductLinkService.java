@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Service
 public class ProductLinkService {
@@ -19,4 +21,13 @@ public class ProductLinkService {
         return productLinkRepository.save(productLink);
     }
 
+    @Transactional
+    public void deleteAll(List<ProductLink> deletedProductLinks) {
+        productLinkRepository.deleteAll(deletedProductLinks);
+    }
+
+    @Transactional
+    public void saveAll(List<ProductLink> newProductLinks) {
+        productLinkRepository.saveAll(newProductLinks);
+    }
 }

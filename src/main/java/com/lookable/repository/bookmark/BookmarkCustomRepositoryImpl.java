@@ -9,7 +9,7 @@ public class BookmarkCustomRepositoryImpl implements BookmarkCustomRepository {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public boolean existsByIds(Long userId, Long postId) {
+    public boolean existsByUserIdAndPostId(Long userId, Long postId) {
         return false;
     }
 }

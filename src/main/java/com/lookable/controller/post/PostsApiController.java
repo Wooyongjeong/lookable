@@ -3,6 +3,7 @@ package com.lookable.controller.post;
 import com.lookable.dto.ApiResponse;
 import com.lookable.dto.post.request.PostCreateRequest;
 import com.lookable.dto.post.request.PostSearchCondition;
+import com.lookable.dto.post.request.PostUpdateRequest;
 import com.lookable.dto.post.response.PostDetailResponse;
 import com.lookable.dto.post.response.PostThumbnailResponse;
 import com.lookable.service.post.PostService;
@@ -46,6 +47,25 @@ public class PostsApiController {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         PostDetailResponse response = postService.findPostDetail(postId, username);
         return ApiResponse.success(response);
+    }
+
+    @PutMapping("/{postId}")
+    public ApiResponse<PostDetailResponse> updatePost(
+            @PathVariable Long postId,
+            @RequestBody PostUpdateRequest request
+    ) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        PostDetailResponse response = postService.updatePost(postId, request, username);
+        return ApiResponse.success(response);
+    }
+
+    @DeleteMapping("/{postId}")
+    public ApiResponse<String> deletePost(
+            @PathVariable Long postId
+    ) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        postService.deletePost(postId, username);
+        return ApiResponse.OK;
     }
 
     @PostMapping("/{postId}/heart")

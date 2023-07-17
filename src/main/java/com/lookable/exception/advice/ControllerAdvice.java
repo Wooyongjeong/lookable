@@ -9,6 +9,7 @@ import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.BindException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -18,6 +19,16 @@ import java.util.stream.Collectors;
 @ResponseStatus(HttpStatus.OK)
 @RestControllerAdvice
 public class ControllerAdvice {
+
+    @ExceptionHandler(RuntimeException.class)
+    public ApiResponse<ErrorResult> runtimeExceptionHandle(RuntimeException ex) {
+        return ApiResponse.error(ErrorCode.E500_INTERNAL_SERVER, ex.getMessage());
+    }
+
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public ApiResponse<ErrorResult> httpRequestMethodNotSupportedExceptionHandle() {
+        return ApiResponse.error(ErrorCode.E405_METHOD_NOT_ALLOWED);
+    }
 
     @ExceptionHandler(SignatureException.class)
     public ApiResponse<ErrorResult> jwtSignatureExceptionHandle() {

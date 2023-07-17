@@ -1,9 +1,14 @@
 package com.lookable.repository.post;
 
+import com.lookable.domain.bookmark.Bookmark;
+import com.lookable.domain.heart.Heart;
 import com.lookable.domain.post.*;
+import com.lookable.domain.productlink.QProductLink;
 import com.lookable.domain.user.User;
 import com.lookable.dto.post.request.PostSearchCondition;
+import com.lookable.dto.post.response.PostDetailResponse;
 import com.lookable.dto.post.response.PostThumbnailResponse;
+import com.lookable.dto.post.response.ProductLinkResponse;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
@@ -77,12 +82,64 @@ public class PostCustomRepositoryImpl implements PostCustomRepository {
         return PageableExecutionUtils.getPage(posts, pageable, countQuery::fetchOne);
     }
 
+    /**
+     *
+     private Long id;
+     private String img;
+     private String description;
+     private String author;
+     private String profileImg;
+     private String temperature;
+     private String weather;
+     private String sensitivity;
+     private String city;
+     private String district;
+     private int heartCount;
+     private boolean isHeart;
+     private boolean isBookmark;
+     private List<String> tags;
+     private List<ProductLinkResponse> productLinks;
+     * @param postId
+     * @param userId
+     * @return
+     */
+    @Override
+    public PostDetailResponse findPostDetail1(Long postId, Long userId) {
+        List<Heart> userHeart = queryFactory.selectFrom(heart)
+                .where(heart.user.id.eq(userId))
+                .fetch();
+        boolean isHeart = !userHeart.isEmpty();
+
+        List<Bookmark> userBookmark = queryFactory.selectFrom(bookmark)
+                .where(bookmark.user.id.eq(userId))
+                .fetch();
+        boolean isBookmark = !userBookmark.isEmpty();
+        return null;
+//        return queryFactory
+//                .selectFrom(post)
+//                .leftJoin(post.hearts, heart)
+//                .leftJoin(post.bookmarks, bookmark)
+//                .leftJoin(post.postTags, postTag)
+//                .leftJoin(postTag.tag, tag)
+//                .leftJoin(post.productLinks, productLink)
+//                .where(post.id.eq(postId))
+//                .fetchJoin()
+//                .fetchOne();
+    }
+
+    private List<ProductLinkResponse> getProductLinkResponse(QProductLink productLink) {
+        return null;
+    }
+
     @Override
     public Post findPostDetail(Long postId) {
         return queryFactory.selectFrom(post)
+                .join(post.hearts, heart)
+                .join(post.bookmarks, bookmark)
                 .join(post.postTags, postTag)
                 .join(postTag.tag, tag)
                 .join(post.productLinks, productLink)
+                .fetchJoin()
                 .where(post.id.eq(postId))
                 .fetchOne();
     }

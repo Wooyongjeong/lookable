@@ -1,15 +1,18 @@
 package com.lookable.service.post;
 
-import com.lookable.domain.post.Post;
+import com.lookable.domain.post.*;
 import com.lookable.domain.posttag.PostTag;
 import com.lookable.domain.productlink.ProductLink;
 import com.lookable.domain.tag.Tag;
 import com.lookable.domain.user.User;
 import com.lookable.dto.post.request.PostCreateRequest;
 import com.lookable.dto.post.request.PostSearchCondition;
+import com.lookable.dto.post.request.PostUpdateRequest;
 import com.lookable.dto.post.request.ProductLinkRequest;
 import com.lookable.dto.post.response.PostDetailResponse;
 import com.lookable.dto.post.response.PostThumbnailResponse;
+import com.lookable.exception.dto.ErrorCode;
+import com.lookable.exception.model.ForbiddenException;
 import com.lookable.exception.model.NotFoundException;
 import com.lookable.repository.post.PostRepository;
 import com.lookable.service.bookmark.BookmarkService;
@@ -24,7 +27,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -50,11 +55,12 @@ public class PostService {
         User user = userService.findByUsername(username);
         Post post = request.toEntity(user);
         List<Tag> tags = tagService.findOrCreateTags(request.getTags());
+        List<PostTag> postTags = new ArrayList<>();
         tags.forEach(tag -> {
-            PostTag postTag = postTagService.createPostTag(post, tag);
-            post.getPostTags().add(postTag);
-            tag.getPostTags().add(postTag);
+            PostTag postTag = postTagService.getPostTag(post, tag);
+            postTags.add(postTag);
         });
+
         List<ProductLink> productLinks = request.getProductLinks().stream()
                 .map(ProductLinkRequest::toEntity)
                 .toList();
@@ -64,9 +70,11 @@ public class PostService {
         });
 
         postRepository.save(post);
+        postTagService.saveAll(postTags);
+        post.getPostTags().addAll(postTags);
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public PostDetailResponse findPostDetail(Long postId, String username) {
         User user = userService.findByUsername(username);
         Post post = postRepository.findById(postId)
@@ -94,5 +102,66 @@ public class PostService {
         User user = userService.findByUsername(username);
         Post post = findPost(postId);
         return bookmarkService.bookmark(user, post) ? "북마크" : "북마크 취소";
+    }
+
+    @Transactional
+    public PostDetailResponse updatePost(Long postId, PostUpdateRequest request, String username) {
+        User user = userService.findByUsername(username);
+        Post post = findPost(postId);
+        if (!post.getUser().getUsername().equals(username)) {
+            throw new ForbiddenException("작성자만 게시글을 수정할 수 있습니다.", ErrorCode.E403_FORBIDDEN_NOT_AUTHOR);
+        }
+
+        if (!CollectionUtils.isEmpty(request.getTags())) {
+            List<Tag> newTags = request.getTags().stream()
+                    .filter(tagName -> post.getPostTags().stream().noneMatch(postTag -> postTag.getTag().getName().equals(tagName)))
+                    .map(tagService::findOrCreateTag)
+                    .toList();
+            List<PostTag> deletedTags = post.getPostTags().stream()
+                    .filter(postTag -> request.getTags().stream().noneMatch(tagName -> postTag.getTag().getName().equals(tagName)))
+                    .toList();
+
+            deletedTags.forEach(deletedTag -> post.getPostTags().remove(deletedTag));
+            postTagService.deletePostTag(deletedTags);
+
+            newTags.forEach(newTag -> {
+                PostTag postTag = postTagService.findOrCreatePostTag(post, newTag);
+                post.getPostTags().add(postTag);
+                newTag.getPostTags().add(postTag);
+            });
+        }
+
+        if (!CollectionUtils.isEmpty(request.getProductLinks())) {
+            List<ProductLink> deletedProductLinks = post.getProductLinks().stream()
+                    .filter(productLink -> request.getProductLinks().stream().noneMatch(productLinkRequest -> productLinkRequest.isEqualToProductLink(productLink)))
+                    .map(productLink -> productLinkService.createProductLink(productLink, post))
+                    .toList();
+
+            List<ProductLink> newProductLinks = request.getProductLinks().stream()
+                    .filter(productLinkRequest -> post.getProductLinks().stream().noneMatch(productLinkRequest::isEqualToProductLink))
+                    .map(ProductLinkRequest::toEntity)
+                    .toList();
+
+            productLinkService.deleteAll(deletedProductLinks);
+            post.getProductLinks().removeAll(deletedProductLinks);
+            productLinkService.saveAll(newProductLinks);
+            post.getProductLinks().addAll(newProductLinks);
+        }
+
+        post.updatePost(request.getImg(), request.getDescription(),
+                request.getTemperature(), request.getWeather(), request.getSensitivity(),
+                request.getCity(), request.getDistrict());
+        boolean isHeart = heartService.isHeart(user.getId(), post.getId());
+        boolean isBookmark = bookmarkService.isBookmark(user.getId(), post.getId());
+        return PostDetailResponse.fromEntity(post, isHeart, isBookmark);
+    }
+
+    @Transactional
+    public void deletePost(Long postId, String username) {
+        Post post = findPost(postId);
+        if (!post.getUser().getUsername().equals(username)) {
+            throw new ForbiddenException("작성자만 게시글을 삭제할 수 있습니다.", ErrorCode.E403_FORBIDDEN_NOT_AUTHOR);
+        }
+        postRepository.delete(post);
     }
 }
