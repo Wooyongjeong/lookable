@@ -82,7 +82,8 @@ public class PostService {
         boolean isHeart = heartService.isHeart(user.getId(), post.getId());
         boolean isBookmark = bookmarkService.isBookmark(user.getId(), post.getId());
         viewService.createViewIfNotPresent(user, post);
-        return PostDetailResponse.fromEntity(post, isHeart, isBookmark);
+        int heartCount = heartService.getHeartCount(postId);
+        return PostDetailResponse.fromEntity(post, isHeart, isBookmark, heartCount);
     }
 
     private Post findPost(Long postId) {
@@ -153,7 +154,8 @@ public class PostService {
                 request.getCity(), request.getDistrict());
         boolean isHeart = heartService.isHeart(user.getId(), post.getId());
         boolean isBookmark = bookmarkService.isBookmark(user.getId(), post.getId());
-        return PostDetailResponse.fromEntity(post, isHeart, isBookmark);
+        int heartCount = heartService.getHeartCount(postId);
+        return PostDetailResponse.fromEntity(post, isHeart, isBookmark, heartCount);
     }
 
     @Transactional

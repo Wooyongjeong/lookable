@@ -29,7 +29,7 @@ public class PostDetailResponse {
     private List<String> tags;
     private List<ProductLinkResponse> productLinks;
 
-    public static PostDetailResponse fromEntity(Post post, boolean isHeart, boolean isBookmark) {
+    public static PostDetailResponse fromEntity(Post post, boolean isHeart, boolean isBookmark, int heartCount) {
         return PostDetailResponse.builder()
                 .id(post.getId())
                 .img(post.getImg())
@@ -41,7 +41,7 @@ public class PostDetailResponse {
                 .sensitivity(post.getFilter().getSensitivity().name())
                 .city(post.getLocation().getCity())
                 .district(post.getLocation().getDistrict())
-                .heartCount(post.getHearts().size())
+                .heartCount(heartCount)
                 .isHeart(isHeart)
                 .isBookmark(isBookmark)
                 .tags(post.getPostTags().stream()
