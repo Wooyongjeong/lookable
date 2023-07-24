@@ -35,3 +35,8 @@
 * Gradle
 * S3, RDS, EC2
 * Git
+
+## 서버 구조
+![architecture](https://github.com/Wooyongjeong/lookable/assets/38418028/28aee412-1273-455b-9f24-af8a484bf123)
+
+
